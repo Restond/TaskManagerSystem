@@ -1,7 +1,9 @@
 package com.restond.controller;
 
 import com.restond.entity.Task;
+import com.restond.entity.TaskStatus;
 import com.restond.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<Task> createTask(@Valid @RequestBody Task task) {
         Task newTask = taskService.createTask(task);
         return new ResponseEntity<>(newTask, HttpStatus.CREATED);
     }
@@ -33,7 +35,7 @@ public class TaskController {
     }
 
     @PutMapping("/tasks/{taskId}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long taskId, @RequestBody Task task) {
+    public ResponseEntity<Task> updateTask(@PathVariable Long taskId, @Valid @RequestBody Task task) {
         task.setId(taskId);
         Task updatedTask = taskService.updateTask(task);
         return new ResponseEntity<>(updatedTask, HttpStatus.OK);
@@ -49,9 +51,9 @@ public class TaskController {
         return ResponseEntity.ok(taskService.findTaskById(taskId));
     }
 
-    @GetMapping("/tasks/status/{completed}")
-    public ResponseEntity<List<Task>> findTaskByCompleted(@PathVariable boolean completed) {
-        return ResponseEntity.ok(taskService.findAllByCompleted(completed));
+    @GetMapping("/tasks/status/{status}")
+    public ResponseEntity<List<Task>> findTasksByStatus(@PathVariable TaskStatus status) {
+        return ResponseEntity.ok(taskService.findAllByStatus(status));
     }
 
     @GetMapping("/tasks/priority/{priority}")

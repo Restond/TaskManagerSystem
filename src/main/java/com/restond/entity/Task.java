@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.time.LocalDate;
 
@@ -15,9 +16,16 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate dueDate;
-    private int priority;
+    @NotBlank
+    @Size(min=1, max=100)
     private String title;
+
+    @Min(1)
+    @Max(5)
+    private int priority;
+
+    private LocalDate dueDate;
+
     private String description;
-    private Boolean completed;
+    private TaskStatus status;
 }

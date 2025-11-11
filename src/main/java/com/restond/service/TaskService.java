@@ -1,6 +1,7 @@
 package com.restond.service;
 
 import com.restond.entity.Task;
+import com.restond.entity.TaskStatus;
 import com.restond.exception.TaskAlreadyExistsException;
 import com.restond.exception.TaskNotFoundException;
 import com.restond.repository.TaskRepository;
@@ -23,6 +24,11 @@ public class TaskService {
         if (taskRepository.existsByTitle(task.getTitle())) {
             throw new TaskAlreadyExistsException("任务标题已存在" + task.getTitle());
         }
+
+        if (task.getStatus() == null) {
+            task.setStatus(TaskStatus.PENDING);
+        }
+
         return taskRepository.save(task);
     }
 
@@ -45,8 +51,8 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public List<Task> findAllByCompleted(Boolean completed) {
-        return taskRepository.findAllByCompleted(completed);
+    public List<Task> findAllByStatus(TaskStatus status) {
+        return taskRepository.findByStatus(status);
     }
 
     public List<Task> findTasksByPriority(int priority) {
