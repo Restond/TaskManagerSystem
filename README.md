@@ -51,6 +51,6 @@
 - TaskService新增用户相关的查询和验证方法
 - TaskRepository添加用户ID与各种条件的组合查询方法
 - 统一错误响应格式，提升API一致性
-### Logged
+### Logging
 - 添加邮件发送过程的详细日志，便于调试和监控
 ---
