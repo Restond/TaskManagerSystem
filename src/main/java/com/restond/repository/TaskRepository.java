@@ -13,9 +13,11 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Nonnull
     Optional<Task> findById(@Nonnull Long id);
 
-    List<Task> findByStatus(TaskStatus status);
-    List<Task> findTasksByPriority(int priority);
-    List<Task> findTasksByDueDateBefore(LocalDate dueDateBefore);
+    List<Task> findByUserIdAndStatus(Long userId, TaskStatus status);
+    List<Task> findByUserIdAndPriority(Long userId, int priority);
+    List<Task> findByUserId(Long userId);
+    List<Task> findByUserIdAndDueDateBefore(Long userId, LocalDate dueDateBefore);
+
     boolean existsById(@Nonnull Long id);
     boolean existsByTitle(String title);
 }

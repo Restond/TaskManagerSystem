@@ -47,23 +47,43 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    public Task updateTaskStatus(Long taskId, TaskStatus status) {
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            task.setStatus(status);
+            return taskRepository.save(task);
+        } else {
+            throw new TaskNotFoundException("任务不存在: " + taskId);
+        }
+    }
+
     public Optional<Task> findTaskById(Long id) {
         return taskRepository.findById(id);
     }
 
-    public List<Task> findAllByStatus(TaskStatus status) {
-        return taskRepository.findByStatus(status);
+    public List<Task> findByUserId(Long userId) {
+        return taskRepository.findByUserId(userId);
     }
 
-    public List<Task> findTasksByPriority(int priority) {
-        return taskRepository.findTasksByPriority(priority);
+    public List<Task> findByUserIdAndPriority(Long userId, int priority) {
+        return taskRepository.findByUserIdAndPriority(userId, priority);
     }
 
-    public List<Task> findTasksByDueDateBefore(LocalDate dueTimeBefore) {
-        return taskRepository.findTasksByDueDateBefore(dueTimeBefore);
+    public List<Task> findByUserIdAndStatus(Long userId, TaskStatus status) {
+        return taskRepository.findByUserIdAndStatus(userId, status);
     }
 
-    public List<Task> findAllTasks() {
-        return taskRepository.findAll();
+    public List<Task> findTasksByUserIdAndDueDateBefore(Long userId, LocalDate dueDateBefore) {
+        return taskRepository.findByUserIdAndDueDateBefore(userId, dueDateBefore);
+    }
+
+    public boolean validateTaskOwnership(Long userId, Long taskId) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+        if (taskOptional.isPresent()) {
+            Task task = taskOptional.get();
+            return task.getUserId().equals(userId);
+        }
+        return false;
     }
 }
