@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -16,8 +17,15 @@ import java.util.Map;
 public class JwtUtil {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor("your-secret-key-that-is-at-least-32-bytes-long!"
-            .getBytes(StandardCharsets.UTF_8));
+    private final SecretKey SECRET_KEY;
+
+    public JwtUtil(@Value("${jwt.secret}") String secretKey) {
+        if (secretKey.getBytes(StandardCharsets.UTF_8).length < 32) {
+            throw new IllegalArgumentException("JWT 密钥长度必须至少 32 字节");
+        }
+        this.SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        logger.info("JWT 工具初始化完成");
+    }
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();

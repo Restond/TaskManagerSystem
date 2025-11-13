@@ -54,3 +54,12 @@
 ### Logging
 - 添加邮件发送过程的详细日志，便于调试和监控
 ---
+# [1.0.3] - 2025-11-12
+### Changed
+- 移除敏感数据
+### 必需的环境变量
+- `DATASOURCE_PASSWORD`: 数据库密码
+- `MAIL_USERNAME`: QQ邮箱账号
+- `MAIL_PASSWORD`: QQ邮箱授权码
+- `JWT_SECRET`: JWT签名密钥（至少32字节）
+---
