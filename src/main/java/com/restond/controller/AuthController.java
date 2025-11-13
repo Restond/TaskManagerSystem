@@ -66,11 +66,12 @@ public class AuthController {
                     emailService.sendLoginSuccessEmail(validUser.getEmail(), validUser.getUsername());
                     logger.info("登陆邮件已成功发送至: {}", validUser.getEmail());
                 } else {
-                    logger.warn("无法发送登录成功邮件: 找不到用户 {}", user.getUsername());
+                    logger.warn("找不到用户 {}", user.getUsername());
                 }
             } catch (Exception e) {
-                logger.error("发送登录成功邮件失败 - 用户名: {}, 错误: {}", user.getUsername(), e.getMessage());
-                logger.debug("邮件发送异常详情:", e);
+                logger.error("发送邮件失败 - 用户名: {}", user.getUsername());
+                logger.error("错误: {}", e.getMessage());
+                logger.debug("异常详情:", e);
             }
 
             return ResponseEntity.ok(response);
