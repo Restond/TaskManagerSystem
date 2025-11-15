@@ -40,7 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 logger.error("Unexpected error during JWT validation", e);
             }
         } else {
-            logger.debug("No Bearer token found in Authorization header");
+            if (!request.getRequestURI().equals("/auth/login")) {
+                logger.debug("No Bearer token found in Authorization header");
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
