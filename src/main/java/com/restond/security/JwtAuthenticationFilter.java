@@ -37,10 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 username = jwtUtil.extractUsername(jwtToken);
             } catch (Exception e) {
-                logger.error("Unexpected error during JWT validation", e);
+                logger.error("JWT 验证失败: " + e.getMessage());
+                logger.error("令牌内容: " + jwtToken);
             }
         } else {
-            logger.debug("No Bearer token found in Authorization header");
+            logger.debug("Authorization 头不存在或不以 Bearer 开头: " + authorizationHeader);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

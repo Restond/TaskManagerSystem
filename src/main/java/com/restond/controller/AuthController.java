@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class  AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
